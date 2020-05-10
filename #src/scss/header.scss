@@ -111,12 +111,24 @@
         @extend .menu__link;
         padding: 0 0 0 30px;
         line-height: 18px; // чтобы влезла иконка
+        min-width: 18px; // чтобы при исчезании текста
+        min-height: 18px; // осталась картика глобуса
         background: url('../img/icons/globe.png') left no-repeat;
-        
+        @media(max-width: 890px) {
+            padding: 0px;
+            span {
+               
+                display: none;
+
+            }
+        }
     }
 
     &__user {
         margin: 0 0 0 30px; // не задаем блоку а задаем элементу!
+        @media(max-width: 890px) {
+            margin: 0px 0px 0px 15px;
+        }
     }
     
 
