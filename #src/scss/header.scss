@@ -8,6 +8,7 @@
    
    
     &__container {
+        position: relative;
         display: flex;
         align-items: center;
         height: 75px;
@@ -50,6 +51,12 @@
         text-transform: uppercase;
         letter-spacing: 1.4px;
         color: #fff;
+        @media (min-width: 992px) { 
+            &:hover{
+                text-decoration: underline;
+            }
+           
+        }
     }
 }
 // бургер:
@@ -105,34 +112,65 @@
         padding: 0 0 0 30px;
         line-height: 18px; // чтобы влезла иконка
         background: url('../img/icons/globe.png') left no-repeat;
+        
     }
 
     &__user {
         margin: 0 0 0 30px; // не задаем блоку а задаем элементу!
     }
+    
 
 }
 .user-header {
 
     &__icon {
+        cursor: pointer;
     }
 
     &__menu {
-        display: none;
+        opacity: 0;         // скрываем меню
+        visibility: hidden; // если не поставить будет нажиматься
+        top: 78px;
+        right: 0;
+        position: absolute;
+        background-color: #1c242a;
+        padding: 20px;
+        li {
+            margin: 0px 0px 8px 0px;
+            &:last-child{
+                margin: 0px 0px 0px 0px;
+            }
+            
+        }
     }
 
     &__link {
-
+        color: #fff;
+        padding: 0 0 0 30px;
+        display: inline-block;
+        line-height: 18px;
         &_1 {
+            background: url('../img/icons/globe.png') left center  no-repeat;
         }
 
         &_2 {
+            background: url('../img/icons/key.png') left center no-repeat;
+
         }
 
         &_3 {
+            background: url('../img/icons/palm.png') 4px center no-repeat;
+
         }
 
         &_4 {
+            background: url('../img/icons/hammer.png') left center no-repeat;
+
+        }
+        @media (min-width: 992px) { 
+            &:hover{
+                text-decoration: underline;
+            }
         }
     }
 }
