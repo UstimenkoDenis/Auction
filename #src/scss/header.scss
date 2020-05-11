@@ -5,16 +5,28 @@
     width: 2005px; //?
     height: 75px; //?
     background-color: #1c242a;
-   
+    
    
     &__container {
         position: relative;
         display: flex;
         align-items: center;
         height: 75px;
+        @media (max-width: $md3 + px) {
+            justify-content: space-between;
+        }
     }
 
     &__logo {
+        width: 144px;
+        position: relative;
+        z-index: 2;
+        @media (max-width: $md3 + px) {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
     }
 
     &__menu {
@@ -29,13 +41,42 @@
 .menu {
     padding: 0px 0px 0px 30px/950px*100%; // при адаптиве 30px - будут в процентах и будут сужаться
     flex: 1 1 auto;
-
+    @media (max-width: $md3 + px) {
+        flex: 0 0 auto; // убираем чтобы отображать логотип посредине
+    }
     // .menu__icon
     &__icon {
     }
     // .menu__body
-    &__body {
-
+    &__body { // боди мы будем скрывать и показывать
+        @media (max-width: $md3 + px) {
+            background-color: rgba(28, 36, 42, 0.8);
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            overflow: auto; // чтобы скролить меню
+            padding: 100px 0px 20px 0px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s, ease 0s;
+            &:after { // закрываем плашкой - при скроле текст будет заезжать за нее
+                content: "";
+                background-color: #1c242a;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 75px;
+            }
+            &._active {
+                opacity: 1;
+                visibility: visible;
+                
+            }
+        }
+        
     }
     // .menu__list
     &__list {
@@ -43,7 +84,18 @@
         justify-content: center;
         li{
             margin: 0 15px;
+            
         }
+        @media (max-width: $md3 + px) {
+            display: block;
+            text-align: center;
+            li {
+                margin: 0px 0px 30px 0px;
+                &:last-child {
+                    margin: 0px 0px 0px 0px;
+                }
+            }
+        }  
     }
     // .menu__link
     &__link {
@@ -57,50 +109,55 @@
             }
            
         }
+        @media (max-width: $md3 + px) {
+           font-size: 24px;
+        }  
     }
+
 }
 // бургер:
 .icon-menu {
-    display: none;
-    position: absolute;
-    top: 18px;
-    right: 10px;
-    width: 30px;
-    height: 18px;
-    cursor: pointer;
-    z-index: 5;
-    span {
-        // @include anim(0.3s, 0s);
-        top: calc(50% - 1px);
-        left: 0px;
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        background-color: #000;
-
-        &:first-child {
-            top: 0px;
-        }
-
-        &:last-child {
-            top: auto;
-            bottom: 0px;
-        }
-    }
-    &._active {
+    @media (max-width: $md3 + px) {
+       
+        position: relative;
+        width: 30px;
+        height: 18px;
+        cursor: pointer;
+        z-index: 5;
         span {
-            // @include scale(0); 
+            // @include anim(0.3s, 0s);
+            top: calc(50% - 1px);
+            left: 0px;
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #ccb48c;
+    
             &:first-child {
-                // @include rotate(-45deg);
-                top: calc(50%-1px);
+                top: 0px;
             }
-
+    
             &:last-child {
-                // @include rotate(45deg);
-                bottom: calc(50%-1px);
+                top: auto;
+                bottom: 0px;
+            }
+        }
+        &._active {
+            span {
+                // @include scale(0); 
+                &:first-child {
+                    // @include rotate(-45deg);
+                    top: calc(50%-1px);
+                }
+    
+                &:last-child {
+                    // @include rotate(45deg);
+                    bottom: calc(50%-1px);
+                }
             }
         }
     }
+  
 }
 .actions-header {
 
@@ -109,6 +166,8 @@
 
     &__region { // тоже что и .menu__link
         @extend .menu__link;
+        position: relative;
+        z-index: 2;
         padding: 0 0 0 30px;
         line-height: 18px; // чтобы влезла иконка
         min-width: 18px; // чтобы при исчезании текста
@@ -136,6 +195,8 @@
 .user-header {
     // .user-header__icon
     &__icon {
+        position: relative;
+        z-index: 2;
         cursor: pointer;
     }
 
@@ -148,12 +209,17 @@
         position: absolute;
         background-color: #1c242a;
         padding: 20px;
+        min-width: 175px;
         li {
             margin: 0px 0px 8px 0px;
             &:last-child{
                 margin: 0px 0px 0px 0px;
             }
             
+        }
+        // сделаем на всю ширину user-header__menu
+        @media (max-width: $md3 + px) {
+            width: 100%;
         }
         &._active {
             top: 78px;
