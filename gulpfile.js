@@ -123,7 +123,7 @@ let  gulp = require('gulp'),                       // подключаем gulp 
     ttf2woff = require('gulp-ttf2woff'),           //подключает и конвертирует шрифты за нас
     ttf2woff2 = require('gulp-ttf2woff2'),         //подключает и конвертирует шрифты за нас
     fonter = require('gulp-fonter');               //чтобы перевести из  otf в ttf 
- 
+    babel = require('gulp-babel');
 
 
 
@@ -198,6 +198,7 @@ function js() {
     return src(path.src.js)     //указываем  источник
     
     .pipe(fileinclude())        // собирает один js из модулей 
+    .pipe(babel())              // транспилируем через babel 
     .pipe(dest(path.build.js))  //копируем его в папку назначения 
 
     .pipe(                      //  прогоняем через плагин сжатия js файла 
