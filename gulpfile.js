@@ -86,7 +86,7 @@ let path = {                                    // пути куда gulp буд
         html: [source_folder + "/*.html", "!" + source_folder + "/_*.html"], // сначала читаем все html файлы в папке и потом делаем
      // исключение для всех файлов начинающихся с подчеркивания
         css: source_folder + "/scss/style.scss",
-        js: source_folder + "/js/script.js",
+        js: source_folder + "/js/app.js",
         img: source_folder + "/img/**/*.+(jpg|png|svg|gif|ico|webp)",     //   ** - все подпапки будем считывать
         fonts: source_folder + "/fonts/*.ttf",
     },

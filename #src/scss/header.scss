@@ -57,10 +57,11 @@
             left: 0;
             top: 0;
             overflow: auto; // чтобы скролить меню
-            padding: 100px 0px 20px 0px;
+            padding: 130px 0px 20px 0px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s, ease 0s;
+            text-align: center;
             &:after { // закрываем плашкой - при скроле текст будет заезжать за нее
                 content: "";
                 background-color: #1c242a;
@@ -88,7 +89,6 @@
         }
         @media (max-width: $md3 + px) {
             display: block;
-            text-align: center;
             li {
                 margin: 0px 0px 30px 0px;
                 &:last-child {
@@ -179,6 +179,16 @@
                
                 display: none;
 
+            }
+        }
+        @media(max-width: $md3 + px) {
+            margin: 35px 0 0 0;
+            display: inline-block;
+            padding: 0 0 0 30px;
+            padding: 0px 0px 0px 30px;
+            span {
+ 
+                display: inline-block;
             }
         }
     }
