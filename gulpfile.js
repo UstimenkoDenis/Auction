@@ -1,9 +1,9 @@
-let project_folder = require("path").basename(__dirname) // будет такое имя как у папки в которой находится
+let project_folder = require("path").basename(__dirname) 
 let source_folder = "#src";
-let fs = require('fs');                         // для работы с файловой системой
+let fs = require('fs');                       
 
 
-let path = {                                    // пути куда gulp будет выгружать обработанные файлы
+let path = {                                  
     build: {
         html: project_folder + "/",
         css: project_folder + "/css/",
@@ -11,229 +11,169 @@ let path = {                                    // пути куда gulp буд
         img: project_folder + "/img/",
         fonts: project_folder + "/fonts/",
     },
-    src: {                                      // пути откуда gulp будет брать  файлы для обработки
+    src: {                                    
 
-        html: [source_folder + "/*.html", "!" + source_folder + "/_*.html"], // сначала читаем все html файлы в папке и потом делаем
-     // исключение для всех файлов начинающихся с подчеркивания
+        html: [source_folder + "/*.html", "!" + source_folder + "/_*.html"],
         css: source_folder + "/scss/style.scss",
         js: source_folder + "/js/app.js",
-        img: source_folder + "/img/**/*.+(jpg|png|svg|gif|ico|webp)",     //   ** - все подпапки будем считывать
+        img: source_folder + "/img/**/*.+(jpg|png|svg|gif|ico|webp)",     
         fonts: source_folder + "/fonts/*.ttf",
     },
-    watch: { // укажем пути к файлам которые нам нужно слушать постоянно и сразу что то на лету выполнять
+    watch: { 
         html: source_folder + "/**/*.html",
         css: source_folder + "/scss/**/*.scss",
         js: source_folder + "/js/**/*.js",
         img: source_folder + "/img/**/*.+(jpg|png|svg|gif|ico|webp)",    
     },
-    // объект отвечающий за удаление папки проекта
+    
     clean: "./" + project_folder + "/"
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-let  gulp = require('gulp'),                       // подключаем gulp в нашем файле
+let  gulp = require('gulp'),                       
     {src, dest} = require('gulp'),                      
-    browsersync = require('browser-sync').create(), // обновление страницы 
-    fileinclude = require('gulp-file-include'),    // сборка из разных блоков (header, footer)
-    del = require('del'),                           // плагин для удаления dist
-    scss = require('gulp-sass'),                    // Обработка файлов стилей scss 
-    autoprefixer = require('gulp-autoprefixer'),    //добавляет  вендорные префиксы к нашим свойствам
-    group_media = require('gulp-group-css-media-queries'), // собирает медиа запросы и группирует в конце 
-    clean_css = require('gulp-clean-css'),         // чистит и сжимает наш css файл на выходе
-    rename = require('gulp-rename'),               // переименование, используется при сжатии файлов
-    uglify = require('gulp-uglify-es').default,    // Плагин для сжатия и оптимизации js
-    imagemin = require('gulp-imagemin'),           // сжать без потери качества.
-    webp = require('gulp-webp'),                   // чтобы gulp конвертировал в новый формат картинок  webp
-    webphtml = require('gulp-webp-html'),          // GULP сам будет подключать к HTML блок для отображения картинок webp
-    webpcss = require('gulp-webpcss'),             // для авто добавления в стили изображений webp
-    svgSprite = require('gulp-svg-sprite'),        // svg
-    ttf2woff = require('gulp-ttf2woff'),           //подключает и конвертирует шрифты за нас
-    ttf2woff2 = require('gulp-ttf2woff2'),         //подключает и конвертирует шрифты за нас
-    fonter = require('gulp-fonter');               //чтобы перевести из  otf в ttf 
+    browsersync = require('browser-sync').create(), 
+    fileinclude = require('gulp-file-include'),   
+    del = require('del'),                          
+    scss = require('gulp-sass'),                   
+    autoprefixer = require('gulp-autoprefixer'),  
+    group_media = require('gulp-group-css-media-queries'), 
+    clean_css = require('gulp-clean-css'),         
+    rename = require('gulp-rename'),               
+    uglify = require('gulp-uglify-es').default,    
+    imagemin = require('gulp-imagemin'),           
+    webp = require('gulp-webp'),                   
+    webphtml = require('gulp-webp-html'),          
+    webpcss = require('gulp-webpcss'),             
+    svgSprite = require('gulp-svg-sprite'),        
+    ttf2woff = require('gulp-ttf2woff'),           
+    ttf2woff2 = require('gulp-ttf2woff2'),         
+    fonter = require('gulp-fonter');               
     babel = require('gulp-babel');
 
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Функция которая будет обнавлять нашу страницу npm i browser-sync --save-dev
-
-
 function browserSync(params) {
-    browsersync.init({                          // подымаем сервер
-        server: {                                  // задаем ему корневую папку
-            baseDir: "./" + project_folder + "/" // базовая папка значение тоже что и для переменной clean
+    browsersync.init({                          
+        server: {                                  
+            baseDir: "./" + project_folder + "/" 
         },
-        port: 3000,                             // на порту 3000
-        notify: false                           // по умолчанию плагин отображает табличку - выключаем ее
+        port: 3000,                             
+        notify: false                           
     })
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// создадим функцию для работы с html файлами 
-// результат этой функции  - копирование в папку назначения нашего index.html после чего перезагружаем браузер
 function html() { 
-    return src(path.src.html)  //указываем  источник
-    // и прогоняем его через плагины (pipe в переводе - труба):
-    .pipe(fileinclude())          // собирает один html из модульных html
-    .pipe(webphtml())             // подключает правильно wamp картинки к html 
-    .pipe(dest(path.build.html))  // указываем пункт назначения, перебросим файлы из исходной папки в папку назначения ()
-    .pipe(browsersync.stream())   // gulp - обнови страницу
+    return src(path.src.html)  
+    
+    .pipe(fileinclude())          
+    .pipe(webphtml())             
+    .pipe(dest(path.build.html))  
+    .pipe(browsersync.stream())   
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 function css() {  
-    return src(path.src.css)            // указываем источник "/scss/style.scss"
+    return src(path.src.css)            
     .pipe(                              
-        scss({                          // прогоняем через плагин scss для перевода в css - файл 
-            outputStyle: "expanded"     // указываем чтобы css файл формировался не сжатым
+        scss({                          
+            outputStyle: "expanded"     
         })
     )
-    .pipe(                              // прогоняем через плагин с группировкой всех media
+    .pipe(                              
         group_media()
     )
-    .pipe(                              // прогон через плагин автопрефиксер 
+    .pipe(                             
         autoprefixer({
-            overrideBrowserslist: ["last 5 versions"],  // браузеры которые нужно поддерживать - последние 5 версий
-            cascade: true                               // стиль написания автопрефиксов - каскадный
+            overrideBrowserslist: ["last 5 versions"],  
+            cascade: true                               
         })
     )
-    .pipe(webpcss())                      // прогон через плагин автоподключения webp изображений               
-    // здесь у нас будет две выгрузки:
-    .pipe(dest(path.build.css))          // загрузим до сжатия и переименования
-    .pipe(clean_css())                  // чистим и сжимаем наш css файл 
-    .pipe(                              // прогон через плагин переименования
+    .pipe(webpcss())     
+    .pipe(dest(path.build.css))         
+    .pipe(clean_css())                  
+    .pipe(                             
         rename({
             extname: ".min.css"
         })
     )
-    .pipe(dest(path.build.css))         // переименованный в папку назначения
-    .pipe(browsersync.stream())         // обновляем страницу
+    .pipe(dest(path.build.css))         
+    .pipe(browsersync.stream())        
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-// обработка js файлов 
+ 
 function js() { 
-    return src(path.src.js)     //указываем  источник
+    return src(path.src.js)    
     
-    .pipe(fileinclude())        // собирает один js из модулей 
-    .pipe(babel())              // транспилируем через babel 
-    .pipe(dest(path.build.js))  //копируем его в папку назначения 
-
-    .pipe(                      //  прогоняем через плагин сжатия js файла 
+    .pipe(fileinclude())        
+    .pipe(babel())              
+    .pipe(dest(path.build.js))
+    .pipe(                     
         uglify()
     )
-    .pipe(                      // прогоняем через плагин переименования наш сжатый файл
+    .pipe(                      
         rename({
             extname: ".min.js"
         })
     )
-    .pipe(dest(path.build.js))  // опять копируем его в папку назначения
-    .pipe(browsersync.stream())  //обновляем страницу
+    .pipe(dest(path.build.js))  
+    .pipe(browsersync.stream())  
 }
-// В итоге в папке назначения получится 2 файла собранных из модулей: один несжатый, другой сжатый
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 function images() { 
-     return src(path.src.img)             //указываем  источник
-    .pipe(                                // конвертируем в webp
+     return src(path.src.img)            
+    .pipe(                               
         webp({
             quality: 70
         })
     )
-    .pipe(dest(path.build.img))           //указываем пункт назначения куда выгрузит webp
-    .pipe(src(path.src.img))              //указываем  источник
+    .pipe(dest(path.build.img))           
+    .pipe(src(path.src.img))              
     .pipe(
-        imagemin({                        // для браузеров не поддерживающих webp будет просто картинка - прогон через плагин сжатия
+        imagemin({                        
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
             interlaced: true,
-            optimizationLevel: 3          // 0 to 7
+            optimizationLevel: 3          
         })
     )
-    .pipe(dest(path.build.img))           //указываем пункт назначения куда выгрузит обычные сжатые картинки
-    .pipe(browsersync.stream())           //обновляем страницу
+    .pipe(dest(path.build.img))          
+    .pipe(browsersync.stream())          
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// Создадим не обычную функцию обработки
-// а задачу которую нам нужно отдельно вызывать
-
 gulp.task('svgSprite', function(){
-    return gulp.src([source_folder + '/iconsprite/*.svg'])          //указываем  источник
+    return gulp.src([source_folder + '/iconsprite/*.svg'])          
     // обработчик
-    .pipe(svgSprite({                                               // прогоняем через плагин svgSprite
+    .pipe(svgSprite({                                               
         mode: {
             stack: {
-                sprite: "../icons/icons.svg", // sprite filename
-                example: true                      // создает html файл с примерами иконок показывает как подключать svg к html!!!!
+                sprite: "../icons/icons.svg", 
+                example: true                      
             }
         }
     }
     ))
-    .pipe(dest(path.build.img))                                    // выгружаем в папку с изображениями
+    .pipe(dest(path.build.img))                                 
 })
 
-// чтобы вызвать задачу пишем в терминале:    gulp svgSprite
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 function fonts(){
-    src(path.src.fonts)                       //указываем  источник
-    .pipe(ttf2woff())                         // прогоняем через плагин конвертации шрифтов
-    .pipe(dest(path.build.fonts));            //указываем пункт назначения
-     return src(path.src.fonts)               //указываем  источник
-            .pipe(ttf2woff2())               // прогоняем через плагин конвертации шрифтов
-            .pipe(dest(path.build.fonts));   //указываем пункт назначения
+    src(path.src.fonts)                      
+    .pipe(ttf2woff())                         
+    .pipe(dest(path.build.fonts));          
+     return src(path.src.fonts)              
+            .pipe(ttf2woff2())               
+            .pipe(dest(path.build.fonts)); 
 
 }
 
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////// Если в папке - источнике есть шрифты с расширением otf - переведем их в ttf выполнив задачу:     gulp otf2ttf /////
-
-
 gulp.task('otf2ttf', function(){
-    return src([source_folder + '/fonts/*.otf'])       // указываем  источник
-    .pipe(fonter({                                     // прогоняем через плагин fonter
+    return src([source_folder + '/fonts/*.otf'])      
+    .pipe(fonter({                                    
         formats: ['ttf']
     }))
-    .pipe(dest(source_folder+ '/fonts/'));            // выгружаем в папку с исходниками
+    .pipe(dest(source_folder+ '/fonts/'));         
 })
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// // будет отвечать за запись и подключение шрифтов к файлу стилей:
 
 function fontsStyle(params) {
 
-    let file_content = fs.readFileSync(source_folder + '/scss/fonts.scss'); // считываем текст из источника -из файла font.scss
-    if (file_content == '') {                                               // если пустой
-        fs.writeFile(source_folder + '/scss/fonts.scss', '', cb);           // записываем в него
+    let file_content = fs.readFileSync(source_folder + '/scss/fonts.scss'); 
+    if (file_content == '') {                                               
+        fs.writeFile(source_folder + '/scss/fonts.scss', '', cb);           
         return fs.readdir(path.build.fonts, function (err, items) {
             if (items) {
                 let c_fontname;
@@ -250,44 +190,24 @@ function fontsStyle(params) {
     }
 }
 
-
-// Пустая callback функция - нужна для fontStyle
 function cb() {
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// В GULP есть метод watch - он следит за измененим в файлах
-// Если происходит изменение в файлах указанных в пути выполняется соответствующая функция-задача
-// отслеживание изменения файлов
 function watchFiles(params){ 
-    gulp.watch([path.watch.html], html);    // внутри путь к файлам за которыми мы хотим следить
-    gulp.watch([path.watch.css], css);      // слежка за scss 
-    gulp.watch([path.watch.js], js);        // слежка за js файлом 
-    gulp.watch([path.watch.img], images);   // слежка за картинками
+    gulp.watch([path.watch.html], html);    
+    gulp.watch([path.watch.css], css);     
+    gulp.watch([path.watch.js], js);       
+    gulp.watch([path.watch.img], images);   
 }
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// функция для того чтобы чистить папку "пункт назначения" project_folder
 
 function clean(params) {
     return del(path.clean);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-// подружим функции с gulp - вклиниваем наши функции в процесс выполнения
 let build = gulp.series(clean, gulp.parallel(js, css, html, images, fonts), fontsStyle); // обработка html, css, js, images, fonts - одновременно 
 let watch = gulp.parallel(build, watchFiles, browserSync);
 
-// Подружим gulp с новыми переменными
 exports.fontsStyle = fontsStyle;
 exports.fonts = fonts;
 exports.images = images;
@@ -296,4 +216,4 @@ exports.css = css;
 exports.html = html;
 exports.build = build;
 exports.watch = watch;
-exports.default = watch; // когда мы запускаем команду gulp , выполняется переменная по умолчанию , которая запускает browserSync
+exports.default = watch; 
